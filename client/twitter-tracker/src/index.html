@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TwitterTracker</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    // Function to handle the message sent from the popup window
+    function handleMessage(event) {
+      if (event.data === 'authenticated') {
+        // Handle authentication success, e.g., navigate to the home page
+        window.location.href = '/home';
+      }
+    }
+    // Listen for messages from the popup window
+    window.addEventListener('message', handleMessage);
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
