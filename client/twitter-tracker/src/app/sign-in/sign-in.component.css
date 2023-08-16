@@ -1,0 +1,50 @@
+/* sign-in-with-twitter.component.css */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .button-container-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 70%; /* Allow the inner container to expand horizontally */
+    max-width: 600px; /* Set a maximum width for the inner container */
+  }
+  
+  .button-container-inner > * {
+    margin: 5px 0; /* Space between elements */
+  }
+  
+  .sign-in,
+  .default-button {
+    width: 70%; /* Adjust width as needed */
+    background-color: #1DA1F2;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 20px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center; /* Center text horizontally */
+  }
+  
+  .default-button {
+    background-color: gray;
+  }
+  
+  .default-button:hover{
+    background-color: black;
+    transform: scale(1.2);
+  }
+  .sign-in:hover {
+    background-color: #0d5788;
+    transform: scale(1.2);
+  }
+  
