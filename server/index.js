@@ -14,21 +14,21 @@ var app = express();
 const port = process.env.PORT || 3030;
 var whitelistUrls = ['http://localhost:8080/']
 // Configure sessions and passport
-  app.use(
+app.use(
     cors({
-      origin: whitelistUrls,
-      allowedHeaders: [
-        "Origin",
-        "X-Requested-With",
-        "Content-Type",
-        "Accept",
-        "X-Access-Token",
-      ],
-      credentials: true,
-      methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-      preflightContinue: false,
+        origin: whitelistUrls,
+        allowedHeaders: [
+            "Origin",
+            "X-Requested-With",
+            "Content-Type",
+            "Accept",
+            "X-Access-Token",
+        ],
+        credentials: true,
+        methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
     })
-  );
+);
 app.use(logger('dev'));
 app.use(session({
     secret: "secret",
