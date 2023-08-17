@@ -12,17 +12,23 @@ const Strategy = require('passport-twitter').Strategy;
 var app = express();
 
 const port = process.env.PORT || 3030;
-
+var whitelistUrls = ['http://localhost:8080/']
 // Configure sessions and passport
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
-app.use(cors({
-    origin: ['http://localhost:8080/#/']
-}));
+  app.use(
+    cors({
+      origin: whitelistUrls,
+      allowedHeaders: [
+        "Origin",
+        "X-Requested-With",
+        "Content-Type",
+        "Accept",
+        "X-Access-Token",
+      ],
+      credentials: true,
+      methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+      preflightContinue: false,
+    })
+  );
 app.use(logger('dev'));
 app.use(session({
     secret: "secret",
