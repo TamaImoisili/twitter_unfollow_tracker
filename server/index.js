@@ -1,23 +1,43 @@
-var express = require('express');
+const express = require('express');
 const cors = require('cors');
-var session = require('express-session');
-var passport = require('passport');
-var logger = require('morgan');
-const { Strategy } = require('passport-twitter').Strategy;
+const session = require('express-session');
+const passport = require('passport');
+const logger = require('morgan');
+
+// REQUIRED: for reading .env file
+require('dotenv').config();
+
+const Strategy = require('passport-twitter').Strategy;
 
 var app = express();
 
+const port = process.env.PORT || 3030;
+
 // Configure sessions and passport
-app.use(cors);
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+app.use(cors({
+    origin: ['http://localhost:8080/#/']
+}));
 app.use(logger('dev'));
-app.use(session({ secret: "secret", resave: true, saveUninitialized: true }));
+app.use(session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 
+const twitterConsumerKey = process.env.CONSUMER_KEY || "";
+const twitterConsumerSecret = process.env.CONSUMER_SECRET || "";
 
 passport.use(new Strategy({
-    consumerKey: "OpTuNjEA5599zJ4PP4No9jyit",
-    consumerSecret: "GoKvk0dvIJFkrtqdcuLVq9oZkNM2WUdLDKZvVU4ycDkz3keRVV",
-    callbackURL: 'http://localhost:3000/twitter/return'
+    consumerKey: twitterConsumerKey,
+    consumerSecret: twitterConsumerSecret,
+    callbackURL: `http://localhost:3030/twitter/return`
 
 }, function (token, tokenSecret, profile, callback) {
     return callback(null, profile);
@@ -30,15 +50,20 @@ passport.serializeUser(function (user, callback) {
 passport.deserializeUser(function (obj, callback) {
     callback(null, obj);
 })
-
+app.get('/health', (req, res) => {
+    res.send('Server is up and running');
+});
 app.get('/sign-in', (req, res) => {
-    res.redirect('http://localhost:4200/sign-in');
+    console.log("failure redirecting user...")
+    res.redirect('http://localhost:8080/#/sign-in');
 });
 app.get('/home', (req, res) => {
-    res.redirect('http://localhost:4200/home');
+    console.log("home redirecting user...")
+    res.redirect('http://localhost:8080/#/home');
 });
 app.get('/', (req, res) => {
-    res.redirect('http://localhost:4200/');
+    console.log("Redirecting user...")
+    res.redirect('http://localhost:8080/#');
 });
 
 app.get('/twitter/login', passport.authenticate('twitter'));
@@ -47,14 +72,11 @@ app.get('/twitter/return', passport.authenticate('twitter', {
     failureRedirect: '/sign-in'
 }), function (req, res) {
     // Send a message to the client-side code in the popup window
-    res.send('<script>window.opener.postMessage("authenticated", "*");</script>');
-
-    // Redirect the main window to the home page
+    //console.log("return redirecting user...")
     res.redirect('/home');
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
