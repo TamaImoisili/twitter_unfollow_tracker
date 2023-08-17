@@ -17,22 +17,37 @@ const twitterConsumerKey = process.env.CONSUMER_KEY || "";
 const twitterConsumerSecret = process.env.CONSUMER_SECRET || "";
 
 const app: express.Application = express();
-// app.use(helmet());
+app.use(helmet());
 
 // // Enables Parsing Body Requests
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// const whitelistUrls = ["http://localhost:4200"];
+const whitelistUrls = ["http://localhost:5173"];
 
-// Configure sessions and passport
-app.use(cors());
+// Configure sessions, cors and passport
 app.use(logger("dev"));
 app.use(
   session({
     secret: "secret",
     resave: true,
     saveUninitialized: true,
+  })
+);
+
+app.use(
+  cors({
+    origin: whitelistUrls,
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "Content-Type",
+      "Accept",
+      "X-Access-Token",
+    ],
+    credentials: true,
+    methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
   })
 );
 
