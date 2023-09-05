@@ -61,15 +61,15 @@ app.get('/health', (req, res) => {
 });
 app.get('/sign-in', (req, res) => {
     console.log("failure redirecting user...")
-    res.redirect('http://localhost:8080/#/sign-in');
+    res.redirect('http://localhost:8080/sign-in');
 });
 app.get('/home', (req, res) => {
     console.log("home redirecting user...")
-    res.redirect('http://localhost:8080/#/home');
+    res.redirect('http://localhost:8080/home');
 });
 app.get('/', (req, res) => {
     console.log("Redirecting user...")
-    res.redirect('http://localhost:8080/#');
+    res.redirect('http://localhost:8080/');
 });
 
 app.get('/twitter/login', passport.authenticate('twitter'));
